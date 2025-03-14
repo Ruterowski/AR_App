@@ -6,7 +6,6 @@ document.addEventListener("DOMContentLoaded", function() {
     firstMarker.addEventListener("markerFound", updateArrow);
     secondMarker.addEventListener("markerFound", updateArrow);
 
-    firstMarker.addEventListener("markerLost", removeArrow);
     secondMarker.addEventListener("markerLost", removeArrow);
 
     function updateArrow() {
