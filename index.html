@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Show Marker Position in AR</title>
+  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/jeromeetienne/ar.js/aframe/build/aframe-ar.min.js"></script>
+</head>
+
+<body style="margin: 0; overflow: hidden;">
+<a-scene
+        vr-mode-ui="enabled: false;"
+        loading-screen="enabled: false;"
+        arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+        embedded
+>
+  <a-marker
+          id="animated-marker"
+          type="pattern"
+          preset="custom"
+          url="assets/marker.patt"
+          emitevents="true"
+  >
+    <a-image
+            src="assets/asset.png"
+            scale="1 1 1"
+            class="clickable"
+            rotation="-90 0 0"
+    ></a-image>
+
+    <!-- Text to Display Position -->
+    <a-text
+            id="marker-text"
+            value="Position: x=0 y=0 z=0"
+            position="0 1 0"
+            align="center"
+            color="white"
+            scale="0.5 0.5 0.5"
+    ></a-text>
+  </a-marker>
+
+  <a-entity camera></a-entity>
+</a-scene>
+
+<script src = 'src/main.js'></script>
+</body>
+</html>
