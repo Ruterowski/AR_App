@@ -30,7 +30,7 @@
     <!-- Text to Display Position -->
     <a-text
             id="marker-text"
-            value="Position: x=0 y=0 z=0"
+            value="Position: x=20 y=20 z=20"
             position="0 1 0"
             align="center"
             color="white"
@@ -48,7 +48,9 @@
 
     marker.addEventListener("markerFound", function() {
       let position = marker.object3D.position;
-      textElement.setAttribute("value", `Position: x=${position.x.toFixed(2)} y=${position.y.toFixed(2)} z=${position.z.toFixed(2)}`);
+      while (true) {
+        textElement.setAttribute("value", `Position: x=${position.x.toFixed(2)} y=${position.y.toFixed(2)} z=${position.z.toFixed(2)}`);
+      }
     });
 
     marker.addEventListener("markerLost", function() {
