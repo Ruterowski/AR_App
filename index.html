@@ -20,38 +20,16 @@
           url="assets/marker.patt"
           emitevents="true"
   >
-
-    <!-- Text to Display Position -->
-    <a-text
-            id="marker-text"
-            value="Position: x=20 y=20 z=20"
-            position="0 1 0"
-            align="center"
-            color="black"
-            scale="0.5 0.5 0.5"
-    ></a-text>
   </a-marker>
+
+  <a-entity id="line"
+            line="start: 0 0 0; end: 5 0 0; color: red; width: 0.1"
+            position="0 0 0"
+  ></a-entity>
 
   <a-entity camera></a-entity>
 </a-scene>
 
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    let marker = document.getElementById("animated-marker");
-    let textElement = document.getElementById("marker-text");
-
-    marker.addEventListener("markerFound", function() {
-      let position = marker.object3D.position;
-      while (true) {
-        textElement.setAttribute("value", `Position: x=${position.x.toFixed(2)} y=${position.y.toFixed(2)} z=${position.z.toFixed(2)}`);
-      }
-    });
-
-    marker.addEventListener("markerLost", function() {
-      console.log("not found");
-      textElement.setAttribute("value", "Marker Lost");
-    });
-  });
-</script>
+<script src = 'src/main.js'></script>
 </body>
 </html>
