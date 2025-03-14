@@ -14,7 +14,16 @@
         embedded
 >
   <a-marker
-          id="animated-marker"
+          id="first-marker"
+          type="pattern"
+          preset="custom"
+          url="assets/firstMarker.patt"
+          emitevents="true"
+  >
+  </a-marker>
+
+  <a-marker
+          id="second-marker"
           type="pattern"
           preset="custom"
           url="assets/marker.patt"
@@ -22,10 +31,12 @@
   >
   </a-marker>
 
-  <a-entity id="line"
-            line="start: 0 0 0; end: 5 0 0; color: red; width: 0.1"
-            position="0 0 0"
-  ></a-entity>
+  <a-entity id="arrow"
+            geometry="primitive: cylinder; height: 0.1; radius: 0.02"
+            material="color: green;"
+            position="0 1 -2"
+            rotation="0 0 0"
+            scale="1 1 1"></a-entity>
 
   <a-entity camera></a-entity>
 </a-scene>
