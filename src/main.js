@@ -14,8 +14,8 @@ document.addEventListener("DOMContentLoaded", function() {
         const marker2Pos = secondMarker.object3D.position;
 
         // Calculate the direction from marker1 to marker2
-        const dx = marker1Pos.x - marker2Pos.x;
-        const dz = marker1Pos.z - marker2Pos.z;
+        const dx = marker2Pos.x - marker1Pos.x;
+        const dz = marker2Pos.z - marker1Pos.z;
 
         // Set the arrow's position to the midpoint between the two markers
         arrow.setAttribute('position', {
