@@ -2,45 +2,27 @@
 <html>
 <head>
   <title>Show Marker Position in AR</title>
+  <link rel="stylesheet" href="style.css">
   <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/jeromeetienne/ar.js/aframe/build/aframe-ar.min.js"></script>
 </head>
 
 <body style="margin: 0; overflow: hidden;">
-<a-scene
-        vr-mode-ui="enabled: false;"
-        loading-screen="enabled: false;"
-        arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
-        embedded
->
-  <a-marker
-          id="first-marker"
-          type="pattern"
-          preset="custom"
-          url="assets/firstMarker.patt"
-          emitevents="true"
-  >
-  </a-marker>
 
-  <a-marker
-          id="second-marker"
-          type="pattern"
-          preset="custom"
-          url="assets/marker.patt"
-          emitevents="true"
-  >
-  </a-marker>
+<div id="welcomePrompt">
+  <h1>Welcome to the Lego assembly guide.</h1>
+  <h2>Please choose which model you want to assemble</h2>
+  <button id="firstModelButton">
+    <figure>
+      <img src="assets/firstModelPhoto.png" height="200" width="200" />
+      <figcaption style="font-size: 20px">First Model</figcaption>
+    </figure>
+  </button>
+</div>
 
-  <a-entity id="arrow"
-            geometry="primitive: cylinder; height: 0.1; radius: 0.02"
-            material="color: green;"
-            position="0 1 -2"
-            rotation="0 0 0"
-            scale="1 1 1"></a-entity>
+<div id="sceneContainer"></div>
 
-  <a-entity camera></a-entity>
-</a-scene>
+<script src="src/main.js"></script>
 
-<script src = 'src/main.js'></script>
 </body>
 </html>
