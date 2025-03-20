@@ -30,15 +30,17 @@ document.addEventListener("DOMContentLoaded", function () {
                     visible="false">
                 </a-entity>
 
-                    <a-text id="informationText"
-                        position="0 0 -1" 
+                                    <a-text id="informationText"
+                        position="0 0 -2" 
                         value="Scan the markers"
                         color="white"
                         align="center"
-                        width="4">
+                        width="4"
+                        scale="5 5 5">
                     </a-text>
 
-                <a-entity camera></a-entity>
+                <a-entity camera>
+                </a-entity>
             </a-scene>
         `;
 
@@ -81,13 +83,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
         secondMarker.addEventListener("markerFound", function () {
             secondMarkerDetected = true;
-            console.log("test");
             updateArrow(firstMarker, secondMarker);
         });
 
-        firstMarker.addEventListener("markerLost", function(){
-            removeArrow();
-        });
+
         secondMarker.addEventListener("markerLost", function (){
             if(secondMarkerDetected) {
                 console.log("You have connected the pieces incorrectly");
