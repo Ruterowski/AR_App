@@ -21,24 +21,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 <a-marker id="first-marker" type="pattern" preset="custom" url="assets/firstMarker.patt" emitevents="true"></a-marker>
                 <a-marker id="second-marker" type="pattern" preset="custom" url="assets/marker.patt" emitevents="true"></a-marker>
 
-                <a-entity id="arrow"
-                    geometry="primitive: cylinder; height: 0.1; radius: 0.02"
-                    material="color: green;"
-                    position="0 1 -2"
-                    rotation="0 0 0"
-                    scale="1 1 1"
-                    visible="false">
-                </a-entity>
-
-                                    <a-text id="informationText"
-                        position="0 0 -2" 
-                        value="Scan the markers"
-                        color="white"
-                        align="center"
-                        width="4"
-                        scale="5 5 5">
-                    </a-text>
-
                 <a-entity camera>
                 </a-entity>
             </a-scene>
@@ -46,12 +28,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
         let scene = document.querySelector("a-scene");
         scene.addEventListener("loaded", function () {
+            console.log("AR loaded");
             setupAR();
         });
     }
 
     function setupAR() {
-        let arrow = document.getElementById("arrow");
+        // let arrow = document.getElementById("arrow");
         const pieces = ["first-marker", "second-marker"];
 
         for (let i = 0; i < pieces.length - 1; i++) {
@@ -65,8 +48,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
         let firstMarker = document.getElementById(firstMarkerId);
         let secondMarker = document.getElementById(secondMarkerId);
-        let text = document.getElementById("informationText");
 
+        let text = document.getElementById("textContainer");
+        text.style.display = "block";
         if (!firstMarker || !secondMarker) {
             console.error(`Markers not found: ${firstMarkerId}, ${secondMarkerId}`);
             return;
@@ -74,23 +58,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (!secondMarkerDetected) {
             console.log("Please scan the QR code of the first piece");
-            text.setAttribute("value", "Please scan the QR code of the first piece");
+            text.innerText = "Please scan the QR code of the first piece";
         }
 
         firstMarker.addEventListener("markerFound", function () {
-            let text = document.getElementById("informationText");
+            text.innerText = "Please scan the QR code of the next piece";
         });
 
         secondMarker.addEventListener("markerFound", function () {
             secondMarkerDetected = true;
-            updateArrow(firstMarker, secondMarker);
+            // updateArrow(firstMarker, secondMarker);
         });
 
 
         secondMarker.addEventListener("markerLost", function (){
             if(secondMarkerDetected) {
                 console.log("You have connected the pieces incorrectly");
-                text.setAttribute("value", "You have connected the pieces incorrectly");
+                text.innerText = "You have connected the pieces incorrectly";
             }
             secondMarkerDetected = false;
         });
@@ -100,36 +84,36 @@ document.addEventListener("DOMContentLoaded", function () {
         return marker.object3D.position;
     }
 
-    function updateArrow(firstMarker, secondMarker) {
-        let arrow = document.getElementById("arrow");
-
-        const marker1Pos = getMarkerPosition(firstMarker);
-        const marker2Pos = getMarkerPosition(secondMarker);
-
-        const dx = marker2Pos.x - marker1Pos.x;
-        const dz = marker2Pos.z - marker1Pos.z;
-
-        arrow.setAttribute("position", {
-            x: (marker1Pos.x + marker2Pos.x) / 2,
-            y: (marker1Pos.y + marker2Pos.y) / 2,
-            z: (marker1Pos.z + marker2Pos.z) / 2,
-        });
-
-        arrow.setAttribute("rotation", {
-            x: 0,
-            y: Math.atan2(dz, dx) * (180 / Math.PI),
-            z: 0,
-        });
-
-        const distance = Math.sqrt(dx * dx + dz * dz);
-        arrow.setAttribute("scale", { x: distance, y: 1, z: 1 });
-        arrow.setAttribute("visible", true);
-    }
-
-    function removeArrow() {
-        let arrow = document.getElementById("arrow");
-        if (arrow) {
-            arrow.setAttribute("visible", false);
-        }
-    }
+    // function updateArrow(firstMarker, secondMarker) {
+    //     let arrow = document.getElementById("arrow");
+    //
+    //     const marker1Pos = getMarkerPosition(firstMarker);
+    //     const marker2Pos = getMarkerPosition(secondMarker);
+    //
+    //     const dx = marker2Pos.x - marker1Pos.x;
+    //     const dz = marker2Pos.z - marker1Pos.z;
+    //
+    //     arrow.setAttribute("position", {
+    //         x: (marker1Pos.x + marker2Pos.x) / 2,
+    //         y: (marker1Pos.y + marker2Pos.y) / 2,
+    //         z: (marker1Pos.z + marker2Pos.z) / 2,
+    //     });
+    //
+    //     arrow.setAttribute("rotation", {
+    //         x: 0,
+    //         y: Math.atan2(dz, dx) * (180 / Math.PI),
+    //         z: 0,
+    //     });
+    //
+    //     const distance = Math.sqrt(dx * dx + dz * dz);
+    //     arrow.setAttribute("scale", { x: distance, y: 1, z: 1 });
+    //     arrow.setAttribute("visible", true);
+    // }
+    //
+    // function removeArrow() {
+    //     let arrow = document.getElementById("arrow");
+    //     if (arrow) {
+    //         arrow.setAttribute("visible", false);
+    //     }
+    // }
 });
