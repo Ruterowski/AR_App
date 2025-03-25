@@ -5,12 +5,13 @@
   <link rel="stylesheet" href="style.css">
   <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/jeromeetienne/ar.js/aframe/build/aframe-ar.min.js"></script>
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
 </head>
 
 <body style="margin: 0; overflow: hidden;">
 
 <div id="welcomePrompt">
-  <h1>Welcome to the Lego assembly guide.</h1>
+ <h1>Welcome to the assembly guide</h1>
   <h2>Please choose which model you want to assemble</h2>
   <button id="firstModelButton">
     <figure>
@@ -21,6 +22,7 @@
 </div>
 
 <div id="sceneContainer"></div>
+<div id="textContainer">Text Container</div>
 
 <script src="src/main.js"></script>
 
