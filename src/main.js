@@ -2,8 +2,13 @@ document.addEventListener("DOMContentLoaded", function () {
     let welcomePrompt = document.getElementById("welcomePrompt");
     let sceneContainer = document.getElementById("sceneContainer");
     let textContainer = document.getElementById("textContainer");
+    let modelContainer = document.getElementById("modelContainer");
+    let manualContainer = document.getElementById("manualContainer");
+    let nextButton = document.getElementById("manualNextButton");
+    let previousButton = document.getElementById("manualPreviousButton");
+    let modelLocked = false; // Prevents updates after picking a model
 
-    document.getElementById("firstModelButton").onclick = function () {
+    document.getElementById("continueButton").onclick = function () {
         enableAr();
     };
 
@@ -11,7 +16,6 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("Screen clicked!");
         welcomePrompt.style.display = "none";
 
-        // Inject the AR Scene dynamically
         sceneContainer.innerHTML = `
             <a-scene
                 vr-mode-ui="enabled: false;"
@@ -19,57 +23,88 @@ document.addEventListener("DOMContentLoaded", function () {
                 arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
                 embedded
             >
-                <a-marker id="first-marker" type="pattern" preset="custom" url="assets/firstMarker.patt" emitevents="true"></a-marker>
+                <a-marker id="firstModelQR" type="pattern" preset="custom" url="assets/Models3D/firstMarker.patt" emitevents="true"></a-marker>
                 <a-marker id="second-marker" type="pattern" preset="custom" url="assets/marker.patt" emitevents="true"></a-marker>
 
-                <a-entity camera>
-                </a-entity>
+                <a-entity camera></a-entity>
             </a-scene>
         `;
 
-        let scene = document.querySelector("a-scene");
-        scene.addEventListener("loaded", function () {
-            console.log("AR loaded");
-            setupAR();
-        });
+        console.log("AR loaded");
+
+        selectModel();
     }
 
-    function setupAR() {
-
-        const pieces = ["first-marker", "second-marker"];
-
-        for (let i = 0; i < pieces.length - 1; i++) {
-            setupMarkers(pieces[i], pieces[i + 1]);
-            console.log(`Setting up markers: ${pieces[i]} and ${pieces[i + 1]}`);
+    function chooseManualForModel(model) {
+        switch (model) {
+            case 1:
+                showManualForModel('Model1')
         }
     }
 
-    function setupMarkers(firstPieceId, secondPieceId, solvedPiecesId){
-        let firstPiece = document.getElementById(firstPieceId);
-        let secondPiece = document.getElementById(secondPieceId);
-        let firstPieceFound = false;
-        let stepSolved = false;
+    function showManualForModel(model) {
+        manualContainer.style.display = "block";
+        let img = document.getElementById("manualImg");
+        let page = 1;
+        img.src = "assets/Manuals/" + model + "/1.png";
+
+        nextButton.onclick = function () {
+            page++;
+            updateManualImage(model, page);
+        }
+
+        previousButton.onclick = function () {
+            if (page > 1) {
+                page--;
+                updateManualImage(model, page)
+            }
+        }
+
+        //TODO: Hide the 'next button' when there are no more pages in the manual
+    }
+
+    function updateManualImage(model, page){
+        if (page > 1){
+            previousButton.style.visibility = "visible";
+        }
+        else{
+            previousButton.style.visibility = "hidden";
+        }
+
+        document.getElementById("manualImg").src = "assets/Manuals/" + model + "/" + page + ".png";
+    }
+
+    function selectModel() {
+        let firstModel = document.getElementById("firstModelQR");
+        let pickModelButton = document.getElementById("pickModelButton");
 
         textContainer.style.display = "block";
-        textContainer.innerText = "Please scan the QR code of the first piece";
+        let selectedModel = 0;
 
-            firstPiece.addEventListener("markerFound", function () {
-                firstPieceFound = true;
-                textContainer.innerText = "Please scan the QR code of the second piece";
-            });
+        firstModel.addEventListener("markerFound", function () {
+            if (modelLocked) return;
 
-            firstPiece.addEventListener("markerLost", function () {
-                firstPieceFound = false;
-                textContainer.innerText = "Please scan the QR code of the first piece";
-            });
+            modelContainer.style.display = "block";
+            document.getElementById("modelImage").src = "assets/Models3D/firstModel3D.png";
+            document.getElementById("pickModelDiv").style.display = "block";
+            selectedModel = 1;
+        });
 
-            secondPiece.addEventListener("markerFound", function () {
-                if (firstPieceFound) {
-                    textContainer.innerText = "Both pieces detected, please follow the instructions";
-                }
-                if (!firstPieceFound) {
-                    textContainer.innerText = "You have scanned the wrong piece";
-                }
-            });
+        firstModel.addEventListener("markerLost", function () {
+            if (modelLocked) return;
+
+            modelContainer.style.display = "none";
+            document.getElementById("pickModelDiv").style.display = "none";
+            selectedModel = 0;
+        });
+
+        pickModelButton.addEventListener("click", function () {
+            modelLocked = true;
+            console.log("Model locked:", selectedModel);
+            pickModelButton.style.display = "none";
+            modelContainer.style.display = "none";
+            textContainer.style.display = "none";
+            chooseManualForModel(selectedModel);
+        });
     }
 });

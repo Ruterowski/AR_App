@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Show Marker Position in AR</title>
+    <meta charset="UTF-8">
+    <title>Show Marker Position in AR</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/jeromeetienne/ar.js/aframe/build/aframe-ar.min.js"></script>
@@ -10,21 +11,59 @@
 
 <body style="margin: 0; overflow: hidden;">
 
+<div id="backButtonDiv" style="display: none; position: fixed; top: 10px; left: 10px;">
+    <button id="backButton" style="width: 50px; height: 50px; background: white; border: none; padding: 5px;">
+        <img src="assets/backButton.png" style="width: 100%; height: 100%;">
+    </button>
+</div>
+
+
 <div id="welcomePrompt">
- <h1>Welcome to the assembly guide</h1>
-  <h2>Please choose which model you want to assemble</h2>
-  <button id="firstModelButton">
-    <figure>
-      <img src="assets/firstModelPhoto.png" height="200" width="200" />
-      <figcaption style="font-size: 20px">First Model</figcaption>
-    </figure>
-  </button>
+ <h1 id="welcomeText" >Welcome to the assembly guide</h1>
+  <h2 id="chooseLanguage">Please select a language</h2>
+    <button id="englishButton" onclick="translateText('en')">English
+        <figure>
+            <img id="englishFlag" src="assets/LanguagesFlags/UK.png" alt="english">
+            <figcaption>English</figcaption>
+        </figure>
+    </button>
+    <button id="spanishButton" onclick="translateText('es')">Spanish
+        <figure>
+            <img id="spanishFlag" src="assets/LanguagesFlags/spain.jpg" alt="spanish">
+            <figcaption>Español</figcaption>
+        </figure>
+    </button>
+    <button id="polishButton" onclick="translateText('pl')">Polish
+        <figure>
+            <img id="polishFlag" src="assets/LanguagesFlags/poland.png" alt="polish">
+            <figcaption>Polski</figcaption>
+        </figure>
+    </button>
+    <div>
+        <button id="continueButton">Continue</button>
+    </div>
+</div>
+
+<div id="pickModelDiv">
+    <button id="pickModelButton">Select model</button>
+</div>
+
+<div id="manualContainer" style="display: none;">
+    <img id="manualImg">
+    <div manualButtons>
+        <button id="manualPreviousButton">Previous page</button>
+        <button id="manualNextButton">Next page</button>
+    </div>
 </div>
 
 <div id="sceneContainer"></div>
-<div id="textContainer">Text Container</div>
+<div id="modelContainer" style="display: none">
+    <img id="modelImage">
+</div>
+<div id="textContainer">Please scan the QR code of the model</div>
 
 <script src="src/main.js"></script>
+<script src="src/translator.js"></script>
 
 </body>
 </html>

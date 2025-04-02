@@ -10,3 +10,76 @@ color: white;
 font-size: 20px;
 border-radius: 5px;
 }
+
+#englishButton{
+    height: 10%;
+    width: 10%;
+    background: white;
+}
+#englishFlag{
+    height: 50%;
+    width: 50%;
+}
+
+#spanishButton{
+    height: 10%;
+    width: 10%;
+    background: white;
+}
+#spanishFlag{
+    height: 50%;
+    width: 50%;
+}
+#polishButton{
+    height: 10%;
+    width: 10%;
+    background: white;
+}
+#polishFlag{
+    height: 50%;
+    width: 50%;
+}
+#modelImage {
+    height: 20%;
+    width: 10%;
+    position: absolute;
+    top: 50%;
+    left: 70%;
+    transform: translate(-50%, -50%);
+}
+#pickModelDiv{
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    font-size: 20px;
+    border-radius: 5px;
+}
+#manualContainer{
+    position: fixed;
+    right: 5%;
+    top: 10%;
+    transform: translate(-50%);
+}
+
+#manualPreviousButton, #manualNextButton {
+    height: 40px;
+    width: 100px; /* Make both buttons the same width */
+    font-size: 16px;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+}
+
+#manualPreviousButton {
+    visibility: hidden; /* Initially hidden */
+}
+
+#manualNextButton {
+
+}
