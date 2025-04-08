@@ -61,14 +61,15 @@ border-radius: 5px;
 }
 #manualContainer{
     position: fixed;
-    right: 5%;
+    scale: 60%;
+    right: 3%;
     top: 10%;
     transform: translate(-50%);
 }
 
 #manualPreviousButton, #manualNextButton {
     height: 40px;
-    width: 100px; /* Make both buttons the same width */
+    width: 100px;
     font-size: 16px;
     color: black;
     border: none;
@@ -77,9 +78,5 @@ border-radius: 5px;
 }
 
 #manualPreviousButton {
-    visibility: hidden; /* Initially hidden */
-}
-
-#manualNextButton {
-
+    visibility: hidden;
 }
