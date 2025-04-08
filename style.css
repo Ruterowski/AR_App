@@ -61,10 +61,10 @@ border-radius: 5px;
 }
 #manualContainer{
     position: fixed;
-    scale: 60%;
-    right: 3%;
     top: 10%;
-    transform: translate(-50%);
+    right: 3%;
+    transform: scale(0.6);
+    transform-origin: top right;
 }
 
 #manualPreviousButton, #manualNextButton {

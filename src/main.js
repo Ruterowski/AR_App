@@ -100,8 +100,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         pickModelButton.addEventListener("click", function () {
             modelLocked = true;
-            console.log("Model locked:", selectedModel);
-            pickModelButton.style.display = "none";
+            console.log("Model locked:", selectedModel)
+            document.getElementById("pickModelDiv").style.display = "none";
             modelContainer.style.display = "none";
             textContainer.style.display = "none";
             chooseManualForModel(selectedModel);
