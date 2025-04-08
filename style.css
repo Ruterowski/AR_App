@@ -61,8 +61,8 @@ border-radius: 5px;
 }
 #manualContainer{
     position: fixed;
-    top: 10%;
-    right: 3%;
+    top: 0;
+    right: 0;
     transform: scale(0.6);
     transform-origin: top right;
 }
