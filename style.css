@@ -11,6 +11,10 @@ font-size: 20px;
 border-radius: 5px;
 }
 
+#welcomePrompt{
+    display: none;
+}
+
 #englishButton{
     height: 10%;
     width: 10%;
