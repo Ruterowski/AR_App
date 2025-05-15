@@ -18,6 +18,7 @@
     </button>
 </div>
 
+<canvas id="overlayCanvas" width="640" height="480" style="position: absolute; top: 0; left: 0;"></canvas>
 
 <div id="welcomePrompt">
  <h1 id="welcomeText" >Welcome to the assembly guide</h1>
@@ -50,16 +51,12 @@
 </div>
 
 <div id="manualContainer" style="display: none;">
-    <img id="manualImg">
-    <div manualButtons>
-        <button id="manualPreviousButton">Previous page</button>
-        <button id="manualNextButton">Next page</button>
-    </div>
+    <img id="piecesNeededImage">
 </div>
 
 <div id="sceneContainer"></div>
-<div id="modelContainer" style="display: none">
-    <img id="modelImage">
+<div id="animationContainer" style="display: none">
+    <img id="animation">
 </div>
 
 <script src="src/main.js"></script>

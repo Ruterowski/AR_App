@@ -1,11 +1,15 @@
 document.addEventListener("DOMContentLoaded", function () {
     let welcomePrompt = document.getElementById("welcomePrompt");
     let sceneContainer = document.getElementById("sceneContainer");
-    let modelContainer = document.getElementById("modelContainer");
+    let modelContainer = document.getElementById("animationContainer");
     let manualContainer = document.getElementById("manualContainer");
-    let nextButton = document.getElementById("manualNextButton");
-    let previousButton = document.getElementById("manualPreviousButton");
-    let modelLocked = false; // Prevents updates after picking a model
+    let piecesImg = document.getElementById("piecesNeededImage");
+    let animationImg = document.getElementById("animation");
+    const overlayCanvas = document.getElementById("overlayCanvas");
+
+    let animationPage = 1
+
+    const overlayCtx = overlayCanvas.getContext("2d");
 
     ///ENABLE THE WELCOME PROMPT AGAIN
     //document.getElementById("continueButton").onclick = function () {
@@ -24,112 +28,32 @@ document.addEventListener("DOMContentLoaded", function () {
                 arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
                 embedded
             >
-                <a-marker id="firstModelQR" type="pattern" preset="custom" url="assets/Models3D/firstMarker.patt" emitevents="true"></a-marker>
-                <a-marker id="second-marker" type="pattern" preset="custom" url="assets/marker.patt" emitevents="true"></a-marker>
-
                 <a-entity camera></a-entity>
             </a-scene>
         `;
 
         console.log("AR loaded");
-
-        selectModel();
     }
 
-    function chooseManualForModel(model) {
-        switch (model) {
-            case 1:
-                showManualForModel('Model1')
-        }
-    }
-
-    function showManualForModel(model) {
-        manualContainer.style.display = "block";
-        let img = document.getElementById("manualImg");
-        let page = 1;
-        img.src = "assets/Manuals/" + model + "/1.png";
-
-        nextButton.onclick = function () {
-            page++;
-            updateManualImage(model, page);
-        }
-
-        previousButton.onclick = function () {
-            if (page > 1) {
-                page--;
-                updateManualImage(model, page)
-            }
-        }
-
-        //TODO: Hide the 'next button' when there are no more pages in the manual
-    }
-
-    function updateManualImage(model, page){
-        if (page > 1){
-            previousButton.style.visibility = "visible";
-        }
-        else{
-            previousButton.style.visibility = "hidden";
-        }
-
-        document.getElementById("manualImg").src = "assets/Manuals/" + model + "/" + page + ".png";
-    }
-
-    function selectModel() {
-        let firstModel = document.getElementById("firstModelQR");
-        let pickModelButton = document.getElementById("pickModelButton");
-
-        let selectedModel = 0;
-
-        firstModel.addEventListener("markerFound", function () {
-            if (modelLocked) return;-image
-
-            modelContainer.style.display = "block";
-            document.getElementById("modelImage").src = "assets/Models3D/firstModel3D.png";
-            document.getElementById("pickModelDiv").style.display = "block";
-            selectedModel = 1;
-        });
-
-        firstModel.addEventListener("markerLost", function () {
-            if (modelLocked) return;
-
-            modelContainer.style.display = "none";
-            document.getElementById("pickModelDiv").style.display = "none";
-            selectedModel = 0;
-        });
-
-        pickModelButton.addEventListener("click", function () {
-            modelLocked = true;
-            console.log("Model locked:", selectedModel)
-            document.getElementById("pickModelDiv").style.display = "none";
-            modelContainer.style.display = "none";
-            textContainer.style.display = "none";
-            chooseManualForModel(selectedModel);
-        });
-    }
 
     AFRAME.registerComponent("frame-capture", {
         init: function () {
             const canvas = document.createElement("canvas");
-            const interval = 2000; // capture every 2 seconds
+            const interval = 500;
             let busy = false;
 
             const sendFrame = () => {
                 const video = document.querySelector("video");
 
-                // Make sure video is ready
                 if (!video || video.readyState !== 4 || busy) return;
                 busy = true;
 
-                // Set canvas size to match the video frame
-                canvas.width = video.videoWidth;
-                canvas.height = video.videoHeight;
+                canvas.width = 1920;
+                canvas.height = 1080;
                 const ctx = canvas.getContext("2d");
 
-                // Draw current video frame to canvas
                 ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-                // Convert canvas to blob (JPEG) and send to backend
                 canvas.toBlob(blob => {
                     if (!blob) {
                         busy = false;
@@ -139,25 +63,56 @@ document.addEventListener("DOMContentLoaded", function () {
                     const formData = new FormData();
                     formData.append("file", blob, "frame.jpg");
 
-                    fetch("http://127.0.0.1:8000/recognition", {
+                    fetch("http://piecedetectionapi.onrender.com/recognition", {
                         method: "POST",
                         body: formData
                     })
                         .then(response => response.json())
                         .then(data => {
-                            console.log(data)
+                            const detections = data?.detections || [];
+                            showManualAndAnimation(detections);
+
                         })
                         .catch(err => console.error("Detection error:", err))
                         .finally(() => {
                             busy = false;
                         });
-                }, "image/jpeg"); // ✅ set correct MIME type
+                }, "image/jpeg");
             };
 
-            // Wait a moment before starting
             setTimeout(() => {
                 setInterval(sendFrame, interval);
             }, 1000);
         }
     });
+
+    function showManualAndAnimation(detections){
+        // drawBoundingBoxes(detections);
+        //step_n_done
+        manualContainer.style.display = "block";
+        piecesImg.src = "assets/Pieces/FirstModel/step" + animationPage + ".png";
+        modelContainer.style.display = "block";
+        animationImg.src = "assets/Manuals/Model1/step" + animationPage + ".png";
+
+        detections.forEach(det => {
+            if(det?.label === "step_" + animationPage + "_done"){
+                animationPage++;
+            }
+        })
+    }
+
+    function drawBoundingBoxes(detections) {
+        overlayCtx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
+        for (let i = 0; i < detections.length; i++) {
+            let det = detections[i];
+            if (det?.label === 'block_pink_4x1') {
+                console.log(det?.box);
+                const [x1, y1, x2, y2] = det?.box;
+                overlayCtx.strokeStyle = "red";
+                overlayCtx.lineWidth = 2;
+                overlayCtx.strokeRect(x2, y2, x1 - x2, y1 - y2);
+                overlayCtx.fillStyle = "red";
+            }
+        }
+    }
 });
