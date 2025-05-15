@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     const formData = new FormData();
                     formData.append("file", blob, "frame.jpg");
 
-                    fetch("http://piecedetectionapi.onrender.com/recognition", {
+                    fetch("http://ruterowski.pythonanywhere.com/recognition", {
                         method: "POST",
                         body: formData
                     })
