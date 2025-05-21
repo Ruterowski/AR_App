@@ -4,7 +4,8 @@ document.addEventListener("DOMContentLoaded", function () {
     let modelContainer = document.getElementById("animationContainer");
     let manualContainer = document.getElementById("manualContainer");
     let piecesImg = document.getElementById("piecesNeededImage");
-    let animationImg = document.getElementById("animation");
+    let animationSrc = document.getElementById("animationImage");
+    let manualAnimation = document.getElementById("manualAnimation")
     const overlayCanvas = document.getElementById("overlayCanvas");
 
     let animationPage = 1
@@ -63,7 +64,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     const formData = new FormData();
                     formData.append("file", blob, "frame.jpg");
 
-                    fetch("http://ruterowski.pythonanywhere.com/recognition", {
+                    fetch("http://127.0.0.1:8000/recognition/m2", {
                         method: "POST",
                         body: formData
                     })
@@ -92,27 +93,28 @@ document.addEventListener("DOMContentLoaded", function () {
         manualContainer.style.display = "block";
         piecesImg.src = "assets/Pieces/FirstModel/step" + animationPage + ".png";
         modelContainer.style.display = "block";
-        animationImg.src = "assets/Manuals/Model1/step" + animationPage + ".png";
+        animationSrc.src = "assets/Manuals/Model2/step" + animationPage + ".gif";
 
         detections.forEach(det => {
-            if(det?.label === "step_" + animationPage + "_done"){
+            console.log(det)
+            if(det?.label === "step_" + animationPage + "_done" || det?.label === "step" + animationPage + "_done"){
                 animationPage++;
             }
         })
     }
 
-    function drawBoundingBoxes(detections) {
-        overlayCtx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
-        for (let i = 0; i < detections.length; i++) {
-            let det = detections[i];
-            if (det?.label === 'block_pink_4x1') {
-                console.log(det?.box);
-                const [x1, y1, x2, y2] = det?.box;
-                overlayCtx.strokeStyle = "red";
-                overlayCtx.lineWidth = 2;
-                overlayCtx.strokeRect(x2, y2, x1 - x2, y1 - y2);
-                overlayCtx.fillStyle = "red";
-            }
-        }
-    }
+    // function drawBoundingBoxes(detections) {
+    //     overlayCtx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
+    //     for (let i = 0; i < detections.length; i++) {
+    //         let det = detections[i];
+    //         if (det?.label === 'block_pink_4x1') {
+    //             console.log(det?.box);
+    //             const [x1, y1, x2, y2] = det?.box;
+    //             overlayCtx.strokeStyle = "red";
+    //             overlayCtx.lineWidth = 2;
+    //             overlayCtx.strokeRect(x2, y2, x1 - x2, y1 - y2);
+    //             overlayCtx.fillStyle = "red";
+    //         }
+    //     }
+    // }
 });

@@ -66,6 +66,14 @@ border-radius: 5px;
     left: 48%;
 }
 
+#animationImage{
+    position: absolute;
+    top: 40%;
+    left: 41%;
+    height: 200px;
+    width: 400px;
+}
+
 #manualPreviousButton, #manualNextButton {
     height: 40px;
     width: 100px;
