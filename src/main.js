@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // drawBoundingBoxes(detections);
         //step_n_done
         manualContainer.style.display = "block";
-        piecesImg.src = "assets/Pieces/FirstModel/step" + animationPage + ".png";
+        piecesImg.src = "assets/Pieces/FirstModel/step" + animationPage + ".jpg";
         modelContainer.style.display = "block";
         animationSrc.src = "assets/Manuals/Model2/step" + animationPage + ".gif";
 
