@@ -68,7 +68,7 @@ border-radius: 5px;
 
 #animationImage{
     position: absolute;
-    top: 40%;
+    top: 47%;
     left: 41%;
     height: 200px;
     width: 400px;
@@ -86,4 +86,11 @@ border-radius: 5px;
 
 #manualPreviousButton {
     visibility: hidden;
+}
+
+#piecesNeededImage {
+    top: 40%;
+    left: 50%;
+    height: 140px;
+    width: 200px;
 }
